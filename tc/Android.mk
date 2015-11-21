@@ -1,5 +1,9 @@
 LOCAL_PATH := $(call my-dir)
 
+ifndef KERNEL_OBJ
+$(error KERNEL_OBJ is not defined.)
+endif
+
 include $(CLEAR_VARS)
 # clang cannot compile 'variable length array in structure' in ipxfrm.c
 LOCAL_CLANG := false
@@ -19,9 +23,9 @@ LOCAL_SYSTEM_SHARED_LIBRARIES := \
 LOCAL_SHARED_LIBRARIES += libiprouteutil libnetlink
 
 ifeq ($(call is-vendor-board-platform,QCOM),true)
-LOCAL_C_INCLUDES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include
+LOCAL_C_INCLUDES := $(TARGET_OUT_INTERMEDIATES)/$(KERNEL_OBJ)/usr/include
 LOCAL_C_INCLUDES += external/iproute2/include
-LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
+LOCAL_ADDITIONAL_DEPENDENCIES := $(TARGET_OUT_INTERMEDIATES)/$(KERNEL_OBJ)/usr
 LOCAL_CFLAGS := -DFEATURE_PRIO
 else
 LOCAL_C_INCLUDES := $(KERNEL_HEADERS) external/iproute2/include
